@@ -1,0 +1,161 @@
+Known bugs in Phobos version 3.2.0 and 3.2.2:
+      - Output of masked sequence does not work.
+        Phobos writes nonsense until hard drive is full.
+
+      - The GUI version of Phobos could crash on linux machines.
+
+
+Known bugs in Phobos version 3.2.4:
+      - Output of masked sequence does not work.
+        Phobos writes nonsense until hard drive is full.
+
+
+Known bugs in Phobos version 3.2.5:
+      - In an imperfect search with the dontRemoveMostlyOverlapping
+		option in effect, Phobos sometimes reported - among the repeats
+		that are mostly overlapped by a dominant repeat - repeats with
+		a composite unit of the form ACACAC. The dominant repeats were not
+		effected. Without the dontRemoveMostlyOverlapping option specified,
+		no error occurred.
+      - Bug which could lead to faulty output:
+        In the GUI (graphical user interface) version of Phobos only the
+        first search after program start was guaranteed to produce a correct
+		output.
+		If after the first search (and without restarting the program)
+		the minimum score or length parameters or the minimum or maximum unit
+		size were changed, they are not considered properly, even though the
+		output file lists the correct search parameters. Since multiple searches
+		without program restart are only possible in the GUI version of Phobos
+		and not in the CL version, the CL version is not effected by this bug.
+
+Known bugs in Phobos version 3.2.6:
+      - Bug which could lead to a faulty output of the GUI version of Phobos:
+        In the GUI (graphical user interface) version of Phobos only the
+        first search after program start was guaranteed to produce a correct
+		output.
+		If after the first search (and without restarting the program)
+		the minimum score or length parameters or the minimum or maximum unit
+		size were changed, they are not considered properly in any successive
+		search, even though the output file lists the correct search parameters.
+		Since multiple searches without program restart are only possible in
+		the GUI version of Phobos and not in the CL version, the CL version is
+		not effected by this bug.
+
+      - On Mac OS X Leopard, the GUI version of Phobos was broken. It seems
+        that in Leopard GUI programs only work properly if they are embedded
+		into an application bundle.
+
+Known bugs in Phobos version 3.3.2b and 3.3.2c:
+  	  - In very rare cases Phobos could crash. The problem occurred when sorting
+        the internal list of mismatches and gaps of a repeat since the
+		comparison operator did not meet the requirements of a strict weak
+		ordering.
+  		The rare crashes where only observed when searching for tandem
+		repeats with a unit size above 30 bp and only if several closely
+		located groups of successive gaps where found in the alignment.
+
+Known bugs in Phobos version 3.3.10:
+	  - The handling of gaps and the "*" in phobos character has lead to an
+	    unexpected behaviour.
+	    Users of the Phobos-Geneious plugin were not effected by this problem!!
+	    Up to this version, Phobos simply ignored gaps
+	    and "*" characters in the input sequence. However, this has an unwanted
+	    side effect: Since Phobos did not read these characters, the sequence coordinates
+	    of repeats in Phobos differed from the coordinates in the original input sequence.
+	    Now Phobos reported repeats with respect to the sequence in memory
+	    (without the gaps and "*"s), with the effect that they will differ in the presence
+	    of gaps or "*"s from the sequence coordinates in the input sequence. Obviously the
+	    user will expect sequence positions of repeats to be reported with respect to the
+	    input sequence including gaps and "*"s.
+	    If no gaps or "*" characters are present in the sequence, this bug does not occur.
+	    Since gaps and "*" characters are rare in input sequences to Phobos, this bug
+	    has not been discovered earlier.
+	    This bug affected version 3.3.10 and all earlier versions. It has been fixed in version
+	    3.3.11.
+	    
+	  - In the GUI version of Phobos, the "Treat N's as missense instead of neutral" checkbox
+	    was not reset when pressing the "Reset parameters" button.
+
+
+Known bugs in Phobos version 3.3.11
+      - When reading fasta sequences, Phobos could crash under specific circumstances:
+      	If two consecutive sequence names ended by spaces and if the second sequence
+      	name was one character longer than the former, Phobos could crash.
+      	I want to thank Dr. Eli Meyer from the University of Texas at Austin for reporting
+      	this error. This error existed in all Phobos versions since version 3.3.5
+
+
+Known bugs in Phobos version 3.3.12
+      - No bugs are known by September, 2010.
+
+
+Known minor accuracy issues of Phobos:
+--------------------------------------
+Phobos is a highly accurate tandem repeat search tool. For shorter repeat units
+it is more accurate than any other tool I know about. For longer repeat units
+the Tandem Repeat Finder program by G. Benson is mostly more accurate than Phobos.  
+
+However, there are very few cases where Phobos
+does not find the optimal repeat.
+
+	The source of this problem is the following:
+	Some repeats cannot be aligned unambiguously
+	to the perfect repeat counterpart:
+
+	Example:
+
+	Alignment 1:
+	------------
+
+	ACACGTACACGTAC--GTACACGTACACGT
+	||||||||||||||  ||||||||||||||
+	ACACGTACACGTACACGTACACGTACACGT 
+
+	Alignment 2:
+	------------
+
+	ACACGTACACGT--ACGTACACGTACACGT
+	||||||||||||  ||||||||||||||||
+	ACACGTACACGTACACGTACACGTACACGT 
+
+	The decision which of the two alignments is chosen can indeed have
+	consequences on the outcome of the tandem repeat search.
+	In the current version, Phobos tries to avoid the described problem
+	by "running the alignment procedure" in both directions for each repeat,
+	which unfortunately does not always solve the problem.
+
+
+	First possible consequence:
+	---------------------------
+	Depending on where the gap is placed, Phobos might favour a
+	longer or shorter alignment, i.e. a longer or shorter repeat.
+	If the gap has been inserted in the "more right" position, a
+	higher score might be reached if the repeat is trimmed behind
+	the gap. If the gap is positioned further left, the score to
+	the right might be sufficiently high to let Phobos extend the
+	repeat beyond the gap.
+	Phobos indeed tries to avoid this problem by aligning a repeat
+	from both directions, but this strategy does not solve the
+	problem in all possible cases. What remains is a minor dependence
+	of the search results on the search direction in rare cases. 
+  
+
+	Second possible consequence:
+	----------------------------
+     	In an imperfect search, if Phobos comes across a repeat in which
+	all units are pairwise different (which only occurs if the repeat
+	unit is sufficiently long), Phobos sometimes chooses a suboptimal
+	consensus repeat unit among all these different units.
+	This indeed seems to occur only if Phobos chose the "wrong" of two
+	or more equally good alignments, causing it to favour the wrong unit
+	in a subsequent decision. The situation is quite complex and
+	cannot be completely understood without understanding the complete
+	Phobos search algorithm.
+	Indeed, if at least two - not necessarily neighbouring units - are
+	identical and if these are also the dominant unit, no problems have
+	been reported that Phobos does not identify this dominant repeat unit.
+
+	The described effects are very special cases and affect only a small
+	proportion of repeats.
+
+

@@ -1,0 +1,70 @@
+Version History
+
+
+
+v3.3.2  -  (released 28. August 2008)
+--------------------------------------------
+- Significantly faster in imperfect search mode, when searching for repeats with
+  long units and/or when using a small penalty score for indels and mismatches.
+- Does not crash any more when reading a bad fasta file, but reports an error.
+- GUI now works on Mac Os X Leopard.
+- New search parameter: maximum score reduction
+- The minimum unit length is not restricted to 1 or 2 any more,
+  but can be any length smaller or equal to the maximum unit length.
+
+
+v3.3.10  -  (released September 2009)
+--------------------------------------------
+- New default search parameters:
+   * mismatch score: -5 (used to be -6)
+   * gap score: -5      (used to be -6)
+   * If two variants of the same repeat have the same score, the longer
+     variant is displayed. In previous versions, Phobos reported
+     the shorter of the two variants. The original behaviour can still
+     be obtained with the --preferShorterRepeats parameter.
+
+- new command-line parameters: --minPerfection, --maxPerfection
+  All tandem repeats in memory are filtered before being written to
+  the output.
+
+- In very rare cases Phobos could crash. The problem occurred when sorting
+  the internal list of mismatches and gaps of a repeat since the comparison
+  operator did not meet the requirements of a strict weak ordering.
+  The rare crashes where only observed when searching for tandem
+  repeats with a unit size above 30 bp and only if several closely
+  located groups of successive gaps where found in the alignment.
+  The problem only occurred for tandem repeats with a unit size above 30 bp
+  and only if several closely located groups of successive gaps where found
+  in the alignment.
+  This problem is resolved in the current version.
+  
+- New output formats are currently in the end-user test phase.
+  The online-help of Phobos shows how to use the new output formats. 
+      --outputFormat <int>
+	(value required)  Phobos provides different output formats for
+     	printing the repeat information. 0: Phobos output format, 1: extended
+     	Phobos output format, 2: gff - general feature format, 3: one-per-line
+	format, 4: as fasta sequence.
+
+  In conjunction with the GFF and one-per-line output formats there
+  is also a new command-line parameter:
+      --sequenceInfoAsComment
+	In the GFF and one-per-line output modes, show additional sequence
+     	information in the output file as a comment.
+
+  Feedback concerning the output formats or Phobos in general are always
+  welcome.
+
+v3.3.11  -  (released Mai 2010)
+--------------------------------------------
+- New search option:  --convert_gaps_to_Ns
+
+- Bug fix: The presence of gaps or "*"s in the input sequence 
+  has lead to the problem, that the sequence coordinates reported to the user
+  were reported after ignoring the gaps and "*"s from the sequence, which is not
+  what the user expects.
+  
+
+v3.3.12  - (released September 2010)
+--------------------------------------------
+- Bug fix: Phobos could crash when reading sequence data files under very special circumstances. For this to occur, sequences needed to end with spaces and for two consecutive sequence names, the second must be one character longer than the first.

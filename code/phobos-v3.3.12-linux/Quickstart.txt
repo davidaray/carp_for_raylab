@@ -1,0 +1,244 @@
+========================================
+PHOBOS version 3.3.12   -   Quickstart
+========================================
+
+Phobos - a tandem repeat search tool
+
+
+How to obtain Phobos:
+=====================
+Phobos can be downloaded form the authors web page:
+www.ruhr-uni-bochum.de/spezzoo/cm/cm_phobos.htm
+
+
+License:
+========
+The tandem repeat search tool Phobos is copyright protected by
+Christoph Mayer (Copyright (C) 2006-2010). For academic and
+non-commercial purposes, Phobos can be used free of charge.
+Results obtained with it can be published without restrictions,
+provided the program and its author are acknowledged by name.
+A commercial license for Phobos can be obtained form the
+author.
+
+
+Disclaimer:
+===========
+The Phobos program is distributed "as is" and
+in the hope that it will be useful, but it
+comes without warranty of any kind.
+The program is still under development.
+Please report any crashes, bugs, or problems you have with this program. 
+
+
+Content of the zip-archiv:
+==========================
+
+Mac OS X and Linux:
+-------------------
+Quickstart.txt             - this Quickstart.txt - file
+bin/phobos_*.app           - Phobos program with graphical user interface 
+bin/phobos_*               - Phobos as command-line program
+Known-Phobos-bugs.txt	   - List of known bugs in older and current version
+example-data-files	   - folder with example data files
+phobos-manual-v3_3_12.pdf  - Phobos manual
+
+
+Windows:
+--------
+Quickstart.txt             - this Quickstart.txt - file
+bin/phobos_gui.exe         - Phobos program with graphical user interface 
+bin/phobos_cl.exe          - Phobos as command-line program
+Known-Phobos-bugs.txt	   - List of known bugs in older and current version
+example-data-files	   - folder with example data files
+phobos-manual-v3_3_12.pdf  - Phobos manual
+
+
+Solaris: (available only upon request)
+--------------------------------------
+Quickstart.txt             - this Quickstart.txt - file
+bin/phobos_*.x             - Phobos as command-line program for sparc and i386
+			     platform
+Known-Phobos-bugs.txt	   - List of known bugs in older and current version
+example-data-files	   - folder with example data files
+phobos-manual-v3_3_12.pdf  - Phobos manual
+
+
+Many thanks to Stephan Frickenhaus (Alfred-Wegener-Institut Bremerhaven) and
+his group who helped me to produce the Solaris binaries.
+
+
+Installation:
+=============
+1. Download the zip-archiv for your platform.
+2. Unpack the zip-archiv.
+3. Move the Phobos binary executables, located in the "bin" directory,
+   to a destination of your choice.
+   
+   A good place to put the GUI-program
+   is a "Program" or "Application" folder.
+   The Gui-program is started by clicking on its item.
+
+   A good place for the CL-program
+   is somewhere in your systems path, e.g. the /usr/local/bin
+   directory on Unix machines.
+   This allows all users to start the program form the command-line
+   from every directory they are in.
+   The most practical way to start Phobos in this case would be to
+   navigate, on the command-line, to your data directory and start Phobos
+   directly from there. 
+
+
+Library dependencies:
+=====================
+Phobos has been dynamically linked on all platforms and thus requires some
+elementary libraries to be installed on your system. On most systems these
+libraries should already be present. Please contact me if you have any
+problems with libraries not being present on your system.
+
+
+Quick start:
+============
+
+How to use the GUI-program:
+---------------------------
+
+- Click in the program icon to start the program.
+- Choose an input file in the FASTA format.
+- Change search parameters if necessary.
+- Click on "Run Analysis".
+
+
+How to use the CL-program:
+--------------------------
+
+For convenience, we recommend to put Phobos into a directory that already is in
+your systems path or into a directory which you add to your systems path.
+This recommendation applies to Mac OS X, Linux, and Windows operating systems.
+
+If you do not know how to do this, it might be easiest to copy the Phobos
+program into the folder that contains your data und run it from there.
+
+In the following, [Options] means that you can specify at this point
+non, one or several optinal options.
+
+CL-program on Mac OS X and other Unix platforms:
+
+- If the Phobos binary is located in the "systems path ", start phobos using:
+  phobos  FASTA-Input-File
+  phobos  [Options] FASTA-Input-File
+  phobos  [Options] FASTA-Input-File Output-File
+  phobos  --help
+
+- If the Phobos is in the local directory and if this is not in your
+  "systems path", start phobos using:
+  ./phobos  FASTA-Input-File
+  ./phobos  [Options] FASTA-Input-File
+  ./phobos  [Options] FASTA-Input-File Output-File
+  ./phobos  --help
+
+- If the Phobos binary is not in your systems path and not in the local
+  directory, start phobos using:
+  <path-to-phobos>/phobos  FASTA-Input-File
+  <path-to-phobos>/phobos  [Options] FASTA-Input-File
+  <path-to-phobos>/phobos  [Options] FASTA-Input-File Output-File
+  <path-to-phobos>/phobos  --help
+
+
+CL-program on Windows:
+
+In order to open a DOS terminal, click  Start -> Run and enter cmd before
+you press return. Now navigate to where you want to start Phobos.
+
+IMORTANT: It is not possible to start the CL-program by clicking on its item.
+If started this way, the Phobos window will disappear again immediately since it
+requires parameters from the commandline.
+
+- If the Phobos binary is located in the "systems path" or the local directory,
+  start phobos using:
+  phobos  FASTA-Input-File
+  phobos  [Options] FASTA-Input-File
+  phobos  [Options] FASTA-Input-File Output-File
+  phobos  --help
+
+- If phobos is not in your systems path and not in the local directory,
+  start phobos using:
+  <path-to-phobos>\phobos  FASTA-Input-File
+  <path-to-phobos>\phobos  [Options] FASTA-Input-File
+  <path-to-phobos>\phobos  [Options] FASTA-Input-File Output-File
+  <path-to-phobos>\phobos  --help
+
+
+Using Phobos in Geneious:
+=========================
+Geneious is a user friendly DNA and protein sequence analysis tool.
+With the Phobos Geneious plugin, the tandem repeat detection capabilities
+of Phobos can be used in Geneious to annotate tandem repeats and to design 
+flanking primers. The plugin is available from the Geneious web site.
+Installing this plugin and using Phobos is straight forward.
+
+Using Phobos in Staden:
+=========================
+Design of flanking primers can also be carried out in the STAMP extension
+model of the Staden pipeline. Please visit the Phobos page for more information.
+
+
+Strategy when searching for flanking primers:
+=============================================
+Users are sometimes unsure whether to search for perfect or imperfect tandem
+repeats when designing flanking primers. I often hear the argument: "I am
+only interested in perfect repeats, so I think I should take the
+"perfect search" option." This is not the best choice for the following reason.
+In the "perfect search" mode, Phobos also searches for perfect
+sub-satellites of imperfect satellites. In order to be able
+to filter out the imperfect repeats, they have to be identified as being
+imperfect in the first place. The best strategy therefore is first to conduct
+a search for imperfect repeats and second to filter out those repeats that are
+indeed imperfect. The second step can conveniently be accomplished by specifying
+a minimum perfection in Phobos or by manually selecting the appropriate
+satellites.
+
+
+
+Typical analyses:
+=================
+
+The default search parameters are quite useful for a first tandem repeat
+analysis. To start a default analysis simply start Phobos from the
+command-line and provide the FASTA-input-file as the only argument:
+
+phobos.exe  FASTA-input-file
+
+
+This command will write the output to the console. If the output
+should be written to a file, type one of the following:
+
+phobos.exe FASTA-input-file > output-file
+phobos.exe FASTA-input-file output-file
+
+Both versions will have the same effect and can be used on the DOS prompt
+or the Unix console.
+
+If the set of tandem repeats found by Phobos includes too short repeat regions,
+use either the -l or -s option to define a minimum length or score.
+
+The following command searches for tandem repeats with a minimum alignment
+score of 10.
+
+phobos.exe -s 10 FASTA-input-file output-file
+
+There are two things one has too keep in mind. (i) In the alignment, the first
+repeat unit is not scored. (ii) There are indeed three Phobos options which
+control the minimum score of a repeat. The other two are chosen by default,
+so that the minimum score is bound below by the repeat unit length. This has
+the effect, that by default, no repeat can be less than two units long, which
+makes sense for most applications.
+
+
+The following command searches for tandem repeat with a minimum length of 13 bp:
+
+phobos.exe -l 13 FASTA-input-file output-file
+
+More advanced length and score constraints are rarely used. Please refer to
+the Phobos manual for details. 
+

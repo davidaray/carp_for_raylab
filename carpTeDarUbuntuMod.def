@@ -1,0 +1,190 @@
+Bootstrap: docker
+From: ubuntu:16.04
+
+%help
+  Singularity image for running Carp-TE
+
+%labels
+  Maintainer  David Ray (david.4.ray@gmail.com)
+  Image_Version 1.0
+
+
+%setup
+#Build in --sandbox mode --> sudo singularity build --sandbox carpUbuntu.simg <this file>
+#After initial simg build....
+#Install CENSOR - Not sure why, but this must be done manually after the build.
+#However, its just as easy to use RepeatMasker using my qsub script. You can skip this.
+	#sudo singularity shell --writable carpUbuntu.simg/
+	#cd ../usr/software
+ 	#tar -zxvf censor-4.2.29.tar.gz
+ 	#cd censor-4.2.29
+ 	#./configure
+ 	#make
+ 	#make install
+#Do not skip - Install edirect
+	#cd $INSTALL
+	#tar -zxvf edirect-8.60.20180426.tar.gz
+	#cd edirect
+	#./setup.sh
+  
+	#Then build the final image
+	#sudo singularity build <imagename.img> <simagename.simg>
+
+#Need to get some more software imported from outside the container.
+#Censor - - for my linux laptop, this is /home/david/containers/censor-4.2.29.tar.gz
+#Move code inside container
+#	cp $PWD/censor-4.2.29.tar.gz ${SINGULARITY_ROOTFS}/usr/censor-4.2.29.tar.gz
+#edirect
+	cp $PWD/edirect-8.60.20180426.tar.gz ${SINGULARITY_ROOTFS}/usr/
+#Phobos for microsatellite detection
+	cp $PWD/phobos-v3.3.12-linux.tar.gz ${SINGULARITY_ROOTFS}/usr/
+
+%post
+	apt-get update
+	apt-get clean
+	apt-get install -qy \
+	wget \
+	bzip2 \
+	default-jre \
+	zip \
+	nano \
+	dialog \
+	vim-athena \
+	bwa \
+	samtools \
+	git \
+	bc \
+	bedtools \
+	pigz \
+	r-base \
+	r-base-dev \
+	locales \
+	pkg-config \
+	python-dev \
+	curl \
+	tmux \
+	tree \
+	git \
+	fortune-mod \
+	cowsay \
+	default-jre \
+	default-jdk
+
+	export LANGUAGE=en_US.UTF-8
+	export LANG=en_US.UTF-8
+	export LC_ALL=en_US.UTF-8
+	locale-gen en_US.UTF-8
+
+# installing perlbrew
+	\curl -L https://install.perlbrew.pl | bash
+
+# installing cpanm
+	~/perl5/perlbrew/bin/perlbrew install-cpanm
+  
+#Build the folders for downloading and compiling software
+	export INSTALL=/usr/software
+	export CODE=/usr/carp-code	
+	echo "Building bind point for Lustre"
+        mkdir -p /lustre
+	mkdir -p $INSTALL
+	mkdir -p $CODE
+
+#Move imported code to appropriate directories
+#	cp /usr/ClassifyConsensusSequences.java $CODE
+#	cp /usr/format_RMSK.pl $CODE
+#	cp /usr/GB_TE_efetch.pl $CODE
+#	cp /usr/GenerateAnnotatedLibrary.java $CODE
+#	cp /usr/GetConsensusProteins.java $CODE
+#	cp /usr/GetProteins.java $CODE
+#	cp /usr/IdentifySSRs.java $CODE
+#	cp /usr/reportsJ.sh $CODE
+#	cp /usr/reportsJ_NCBI.sh $CODE
+	
+#	cp /usr/censor-4.2.29.tar.gz $INSTALL
+	cp /usr/edirect-8.60.20180426.tar.gz $INSTALL
+	cp /usr/phobos-v3.3.12-linux.tar.gz $INSTALL
+  	
+	cd $INSTALL
+
+#put java in INSTALL
+#	ln -s /usr/bin/java
+
+#install bioconda
+	wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+	chmod u+x Miniconda3-latest-Linux-x86_64.sh
+	bash ./Miniconda3-latest-Linux-x86_64.sh -b -p /usr/software/miniconda3
+	export PATH="/usr/software/miniconda3/bin:$PATH"
+#conda install -y -c bioconda
+	rm Miniconda3-latest-Linux-x86_64.sh
+	ln -s /usr/software/miniconda3/bin/python /usr/local/bin
+
+#Download GO v10.1 & Install it to /usr/local/go
+ 	wget https://dl.google.com/go/go1.10.1.linux-amd64.tar.gz
+	tar -C /usr/local -xzf go1.10.1.linux-amd64.tar.gz
+	export PATH=$PATH:/usr/local/go/bin
+
+#Export the GOPATH so we can control where Go Packages get installed.
+	export GOPATH=/usr/go
+	mkdir -p $GOPATH
+
+	go get -u github.com/biogo/examples/krishna
+	go get github.com/biogo/examples/krishna/matrix
+	go get github.com/biogo/examples/igor
+	go get github.com/biogo/examples/igor/seqer
+	go get github.com/biogo/examples/igor/gffer
+	go get github.com/biogo/examples/bundle  
+
+#Install old version of BLAST
+	apt-get -y install blast2
+#	cd $INSTALL
+#	wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.7.1+-x64-linux.tar.gz
+#	mkdir -p /usr/blast
+#	tar -C /usr/blast -zxvf ncbi-blast-2.7.1+-x64-linux.tar.gz
+
+	#Install MUSCLE
+	cd $INSTALL
+	wget https://www.drive5.com/muscle/downloads3.8.31/muscle3.8.31_i86linux64.tar.gz
+	mkdir -p /usr/muscle
+	tar -C /usr/muscle -zxvf muscle3.8.31_i86linux64.tar.gz
+	cd /usr/muscle
+	cp muscle3.8.31_i86linux64 muscle
+	export PATH=$PATH:/usr/muscle
+	cd $INSTALL
+
+#Commands to install BioPerl - Requires cpanm
+	/root/perl5/perlbrew/bin/cpanm Module::Build
+	/root/perl5/perlbrew/bin/cpanm Bio::Perl
+
+#Install edirect
+	cd $INSTALL
+	tar -zxvf edirect-8.60.20180426.tar.gz
+	cd edirect
+	./setup.sh
+
+#Install phobos
+	cd $INSTALL
+	tar -xvf phobos-v3.3.12-linux.tar.gz
+	cd phobos-v3.3.12-linux
+
+%environment
+	export PATH=$PATH:/usr/local/go/bin:/usr/wu-blast:/usr/blast:/usr/muscle:/usr/software/edirect:/usr/software/phobos-v3.3.12-linux/bin
+	export GOPATH=/usr/go
+	export PATH=$PATH:$GOPATH/bin
+	export PATH=/root/perl5/perlbrew/bin:$PATH
+	source ~/perl5/perlbrew/etc/bashrc
+
+#	export LANGUAGE=en_US.UTF-8
+#	export LANG=en_US.UTF-8
+#	export LC_ALL=en_US.UTF-8
+#	locale-gen en_US.UTF-8
+
+%runscript
+	/bin/bash <<EOF
+	EOF
+
+#Run the commands passed by the user outside the container.
+	exec "$@"
+
+
+
+
