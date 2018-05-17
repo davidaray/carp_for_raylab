@@ -1,8 +1,16 @@
-Original instructions are available at https://github.com/carp-te/carp-documentation in CARP.pdf.
+Original instructions are available at https://github.com/carp-te/carp-documentation in CARP.pdf. 
+Details are available in Zeng L, Kortschak RD, Raison JM, Bertozzi T, Adelson DL (2018) 
+Superior ab initio identification, annotation and characterisation of TEs and segmental 
+duplications from genome assemblies. PLoS ONE 13(3): e0193588. 
+https://doi.org/10.1371/journal.pone.0193588
+
 
 This pipeline relies on a singularity container that must be built prior to working.
-You must build the container on a computer on which you are root or request it from david.4.ray@gmail.com. 
-To build the container you must have singularity installed -- https://singularity.lbl.gov -- and run 'singularity build carpUbuntu.img carpcarpTEDarUbuntuMod.def'
+You must build the container on a computer on which you are root or request it 
+from david.4.ray@gmail.com. 
+To build the container you must have singularity installed 
+-- https://singularity.lbl.gov -- 
+and run 'singularity build carpUbuntu.img carpcarpTEDarUbuntuMod.def'
 Once built, add the container to a local directory on your hpcc and take note of the path. 
 
 Proceed with the following: 
