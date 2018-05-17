@@ -167,6 +167,5 @@ sed 's/consensus#//g' $PREFIX"_unclassified.fa" | sed 's/ Matches no similar seq
 
 grep "Family#" $WORKING/carprFer2.e* | awk '{print $3 "\t" $4}' | sed 's/(//g' | sed 's/)//g' | sed 's/#//g' >rFer_familycounts.txt
 
-grep "Family#" $WORKING/carprFer2.e* | awk '{print $3 "\t" $4}' | sed 's/(//g' | sed 's/)//g' | sed 's/#//g' | sort -nrk2 >rFer_familysorts.txt
-
+sort -nrk2 rFer_familycounts.txt >rFer_familysorts.txt
 
