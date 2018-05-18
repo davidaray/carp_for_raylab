@@ -20,6 +20,7 @@ PREFIX=rFer
 WORKDIR=/lustre/scratch/daray/carp2
 ##Path to singularity container
 SINGPATH=/home/daray/singularity_containers
+SAMTOOLS=/lustre/work/daray/software/samtools
 
 cd $WORKDIR
 if [ -d results_classify ] 
@@ -158,12 +159,13 @@ singularity exec $SINGPATH/carpUbuntu.img java -cp . GenerateAnnotatedLibrary
 mv GenerateAnnotatedLibrary* $CODE 
 
 cd finallibrary
-python ../code/sort-carp.py Denovo_TE_Library.fasta $PREFIX
+python $WORKING/code/sort-carp.py Denovo_TE_Library.fasta $PREFIX
 
 cut -d ' ' -f1 $PREFIX"_annotated.fa" | sed 's/_consensus:/_/g' | sed 's/\*/#/' | sed 's/\*/\//' | sed 's/NonLTR\/LINE/LINE\/LINE/g' |  sed 's/NonLTR\/SINE/SINE\/SINE/g'>$PREFIX"_annotated_rm.fa"
 sed 's/consensus#Chimeric/Chimeric:/g' $PREFIX"_chimeric.fa" | sed 's/ric: /ric:/g'| sed 's/ /_/g' | sed 's/;_/;/g' >$PREFIX"_chimeric_mod.fa"
 sed 's/consensus#PartialAnnotation/Partial:/g' $PREFIX"_partial.fa" | sed 's/tial: /tial:/g'| sed 's/ /_/g' | sed 's/;_/;/g' >$PREFIX"_partial_mod.fa"
 sed 's/consensus#//g' $PREFIX"_unclassified.fa" | sed 's/ Matches no similar sequence/#Unknown\/Unknown/g' > $PREFIX"_unclassified_rm.fa" 
+$SAMTOOLS/samtools faidx Denovo_TE_Library.fasta | cut -f1-2 > Denovo_TE_Library.fasta.lengths.fai 
 
 grep "Family#" $WORKING/carprFer2.e* | awk '{print $3 "\t" $4}' | sed 's/(//g' | sed 's/)//g' | sed 's/#//g' >rFer_familycounts.txt
 

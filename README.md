@@ -48,6 +48,7 @@ Edit your part1.sh file to match:
 
 Edit your part2.sh file to match:
 1-5 from part1.sh
+6. add the path to your installation of samtools. (23)
 Everything else should be automatic.
 
 Your part1.sh should generate many, many files in your chunks folder as well as a 'krishna.gff' file in your working directory. It should also download and populate your annotationfiles folder with 'uniprot_sprot.fasta' and 'GB_TE.fa'
