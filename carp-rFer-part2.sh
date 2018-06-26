@@ -133,7 +133,7 @@ mv protein.txt results_classify/protein.txt
 ##Check for simple sequence repeats
 ##Must download and install phobos
 ##http://www.ruhr-uni-bochum.de/ecoevo/cm/cm_phobos.htm
-/lustre/scratch/daray/carp-rm/code/phobos-v3.3.12-linux/bin/phobos-linux-gcc4.1.2 -r 7 --outputFormat 0 --printRepeatSeqMode 0 ProteinReport/notKnownNotProtein.fa > results_classify/notKnownNotProtein.phobos
+$CODE/phobos-v3.3.12-linux/bin/phobos-linux-gcc4.1.2 -r 7 --outputFormat 0 --printRepeatSeqMode 0 ProteinReport/notKnownNotProtein.fa > results_classify/notKnownNotProtein.phobos
 cp $CODE/IdentifySSRs.java IdentifySSRs.java
 singularity exec $SINGPATH/carpUbuntu.img javac IdentifySSRs.java
 singularity exec $SINGPATH/carpUbuntu.img java -cp . IdentifySSRs
